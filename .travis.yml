@@ -1,0 +1,28 @@
+# 指定环境
+language: node_js
+# 指定版本
+node_js:
+  - "14"
+services:
+  - docker
+env:
+  global: GITHUB_TOKEN=$GITHUB_TOKEN
+cache:
+  directories:
+    - "node_modules"
+git:
+  depth: 1 # 仅克隆最新的 commit
+branchs:
+  only:
+    - master # 指定只有检测到master分支有变动时才执行git 任务
+install:
+  - yarn # 克隆完项目后，安装
+script:
+  - npm run test # 生成测试报告
+  - npm run build # 打包生成静态资源
+after_script:
+  - if [[ "$TRAVIS_TEST_RESULT" == 0 ]]; then ./node_modules/.bin/codecov; fi # 执行完 travis 测试任务无报错后上传报告
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin "$DOCKER_RESP_HOST"
+  - docker build -t demo-ts:latest -f ./spock/Dockerfile .
+  - docker tag demo-ts:latest "$DOCKER_RESP_HOST"/micro-service/demo-ts:latest
+  - docker push "$DOCKER_RESP_HOST"/micro-service/demo-ts:latest
