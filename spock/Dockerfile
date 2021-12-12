@@ -7,4 +7,4 @@ COPY /dist /usr/share/nginx/html/
 
 EXPOSE 80
 
-ENTRYPOINT ["./cmd.sh"]
+ENTRYPOINT ["sh", "./cmd.sh"]

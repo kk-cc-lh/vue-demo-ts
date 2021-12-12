@@ -26,3 +26,4 @@ after_script:
   - docker build -t demo-ts:latest -f ./spock/Dockerfile .
   - docker tag demo-ts:latest "$DOCKER_RESP_HOST"/micro-service/demo-ts:latest
   - docker push "$DOCKER_RESP_HOST"/micro-service/demo-ts:latest
+  - ssh root@
