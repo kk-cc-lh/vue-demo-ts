@@ -1,0 +1,10 @@
+version: "3"
+services: # 服务列表
+  front: # 前端 服务
+    container_name: docker.kuchao.fun/micro-service/demo-ts:latest # 容器名称
+    ports: # 暴露的端口
+      - "8088:80"
+    restart: always # 自动重启
+    environment: # 设置环境变量
+      - NODE_ENV=production
+    command: npm run start # 覆盖容器启动后默认执行的命令
